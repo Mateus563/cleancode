@@ -213,6 +213,21 @@ public class TelaCliente extends javax.swing.JFrame {
         limpar();
     }//GEN-LAST:event_btnLimparActionPerformed
 
+    private String validar(String nome, String txtCpf) {
+        if (GenericValidator.isBlanckOrNull(nome)) {
+            return "Informe seu nome.";
+        }
+        if (GenerecValidator.isBlankOrNull(txtCpf)) {
+            return "Informe seu CPF.";
+        }
+        if (!GenericValidator.isBlankOrNull(txtCpf)) {
+            return "CPF inválido - verifique novamente e digite.";
+        }
+        if (Integer.parseInt(txtCpf) <= 0) {
+            return "CPF deve ser ter 11 digitos";
+        }
+        return null;
+    }
 
 
     private void cadastrar() {
