@@ -1,6 +1,5 @@
 package Telas;
 
-
 import org.apache.commons.validator.GenericValidator;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
@@ -10,25 +9,33 @@ import java.sql.*;
  * @author mateus.moras
  */
 public class TelaCliente extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaCliente.class.getName());
-    
+
     private static final String URL = "jdbc:postgresql://localhost:5432/lojainformatica";
     private static final String USUARIO = "postgres";
     private static final String SENHA = "postgres";
-    
+
     /**
      * Creates new form TelaCliente
      */
-    public TelaCliente(java.awt.Frame parent,  boolean modal) {
-        super(parent, modal); 
+    public TelaCliente(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
-        
+
         jTextField.setEditable(False);
-        
+
         jTablel.getSelectionModel().addListSelectinModeListener(evt -> {
-            if (!evt.getValueIsAdjusting() && )
-        )
+            if (!evt.getValueIsAdjusting() && jTablel.getSelectedRow() != -1) {
+                DefaultTableModel modelo = (  DefaultTableModel jTablel.getModel();
+                int linha = JTablel.getSelectedRow();
+                jTextField1.setText(modelo.getValueAt(linha, 0).toString());
+                jTextField2.setText(modelo.getValueAt(linha, 1).toString());
+                jTextField3.setText(modelo.getValueAt(linha, 2).toString());
+            }
+        });
+
+        carregarTabela();
     }
 
     /**
@@ -53,10 +60,10 @@ public class TelaCliente extends javax.swing.JFrame {
         txtCep = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblItens = new javax.swing.JTable();
-        btnSalvar = new javax.swing.JButton();
-        btnListar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
+        btnCadastrar = new javax.swing.JButton();
+        btnLimpar = new javax.swing.JButton();
+        btnRemover = new javax.swing.JButton();
+        btnAtualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,13 +92,33 @@ public class TelaCliente extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblItens);
 
-        btnSalvar.setText("Salvar");
+        btnCadastrar.setText("Cadastrar");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
 
-        btnListar.setText("Listar Clientes");
+        btnLimpar.setText("limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
 
-        btnEditar.setText("Editar");
+        btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
 
-        btnExcluir.setText("Excluir");
+        btnAtualizar.setText("Atualizar");
+        btnAtualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtualizarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,15 +138,15 @@ public class TelaCliente extends javax.swing.JFrame {
                         .addComponent(txtTelefone, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(txtCpf, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(txtNome, javax.swing.GroupLayout.Alignment.LEADING))
-                    .addComponent(btnSalvar))
+                    .addComponent(btnCadastrar))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnListar)
-                        .addGap(91, 91, 91)
-                        .addComponent(btnEditar)
+                        .addComponent(btnAtualizar)
+                        .addGap(119, 119, 119)
+                        .addComponent(btnLimpar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnExcluir))
+                        .addComponent(btnRemover))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -155,19 +182,45 @@ public class TelaCliente extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSalvar))
+                        .addComponent(btnCadastrar))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnExcluir)
-                            .addComponent(btnListar)
-                            .addComponent(btnEditar))))
+                            .addComponent(btnRemover)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnLimpar)
+                                .addComponent(btnAtualizar)))))
                 .addGap(18, 18, 18))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        salvar();
+    }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
+        atualizar();
+    }//GEN-LAST:event_btnAtualizarActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        excluir();
+    }//GEN-LAST:event_btnRemoverActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        limpar();
+    }//GEN-LAST:event_btnLimparActionPerformed
+
+
+
+    private void cadastrar() {
+        String nome = txtNome.getText().trim();
+        String cpf = txtCpf.getText().trim();
+        String telefone = txtTelefone.getText().trim();
+        String
+    }
 
     /**
      * @param args the command line arguments
@@ -205,10 +258,10 @@ public class TelaCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnExcluir;
-    private javax.swing.JButton btnListar;
-    private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnAtualizar;
+    private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnLimpar;
+    private javax.swing.JButton btnRemover;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
