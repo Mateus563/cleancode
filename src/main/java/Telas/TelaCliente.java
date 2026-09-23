@@ -25,10 +25,10 @@ public class TelaCliente extends javax.swing.JFrame {
 
         jTextField.setEditable(False);
 
-        jTablel.getSelectionModel().addListSelectinModeListener(evt -> {
-            if (!evt.getValueIsAdjusting() && jTablel.getSelectedRow() != -1) {
-                DefaultTableModel modelo = (  DefaultTableModel jTablel.getModel();
-                int linha = JTablel.getSelectedRow();
+        tblItens.getSelectionModel().addListSelectinModeListener(evt -> {
+            if (!evt.getValueIsAdjusting() && tblItens.getSelectedRow() != -1) {
+                DefaultTableModel modelo = (  DefaultTableModel tblItens.getModel();
+                int linha = tblItens.getSelectedRow();
                 jTextField1.setText(modelo.getValueAt(linha, 0).toString());
                 jTextField2.setText(modelo.getValueAt(linha, 1).toString());
                 jTextField3.setText(modelo.getValueAt(linha, 2).toString());
@@ -217,7 +217,7 @@ public class TelaCliente extends javax.swing.JFrame {
         if (GenericValidator.isBlanckOrNull(nome)) {
             return "Informe seu nome.";
         }
-        if (GenerecValidator.isBlankOrNull(txtCpf)) {
+        if (GenericValidator.isBlankOrNull(txtCpf)) {
             return "Informe seu CPF.";
         }
         if (!GenericValidator.isBlankOrNull(txtCpf)) {
